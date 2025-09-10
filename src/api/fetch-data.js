@@ -5,7 +5,7 @@ dotenv.config();
 
 const { BASE_API_URL } = process.env;
 
-export const fetchCategories = async () => {
+export const fetchSections = async () => {
     const url = `${BASE_API_URL}/categories/`;
     const { data } = await axios.get(url);
     return data.results;
@@ -17,7 +17,7 @@ export const fetchProductsByCategory = async (categoryId) => {
     return data;
 };
 
-export const fetchProductDetails = async (productId) => {
+export const fetchProductById = async (productId) => {
     const url = `${BASE_API_URL}/products/${productId}/`;
     const { data } = await axios.get(url);
     return data;

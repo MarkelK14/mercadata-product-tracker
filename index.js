@@ -1,10 +1,11 @@
 import cron from "node-cron";
 
-import { fetchCategories,fetchProductsByCategory } from "./src/api/fetch-data.js";
-import { saveOrUpdateCategory } from "./src/services/category.service.js";
-import { saveOrUpdateSubcategories } from "./src/services/subcategory.service.js";
+import { fetchSections,fetchProductsByCategory, fetchProductById } from "./src/api/fetch-data.js";
+import { saveOrUpdateSectionsAndCategories } from "./src/services/section.service.js";
+import { saveOrUpdateSubcategoriesAndProductIds } from "./src/services/category.service.js";
 import { saveOrUpdateProduct } from "./src/services/product.service.js";
-import { getSubcategoryIds } from "./src/repositories/subcategory.repository.js";
+import { getCategoryIds } from "./src/repositories/category.repository.js";
+import { getProductIds } from "./src/services/product.service.js";
 
 // Se ejecuta todos los días a las 5am
 // cron.schedule("0 5 * * *", () => {
@@ -15,28 +16,25 @@ import { getSubcategoryIds } from "./src/repositories/subcategory.repository.js"
 
 async function fetchData() {
   try {
-    // const categories = await fetchCategories();
-    
-    // for (const category of categories) {
-    //   await saveOrUpdateCategory(category);
-    // }
 
-    const subcategoryIds = await getSubcategoryIds();
-
-    for (const subcat of subcategoryIds) {
-
-      const subcategoryData = await fetchProductsByCategory(subcat.subcategory_id);
-      await saveOrUpdateSubcategories(subcategoryData);
-
+    // Get all sections and categories
+    const sections = await fetchSections();
+    for (const section of sections) {
+      await saveOrUpdateSectionsAndCategories(section);
     }
 
+    // Get all categories and product IDs
+    const categoryIds = await getCategoryIds();
+    for (const cat of categoryIds) {
+      const categoryData = await fetchProductsByCategory(cat.category_id);
+      await saveOrUpdateSubcategoriesAndProductIds(categoryData);
+    }
+
+    // Get all product details
     const productIds = await getProductIds();
-
-    for (const prodId of productIds) {
-
-      const productData = await fetchProductById(prodId.product_id);
-      // await saveOrUpdateProduct(productData);
-
+    for (const prod of productIds) {
+      const productData = await fetchProductById(prod.product_id);
+      await saveOrUpdateProduct(productData);
     }
 
   } catch (err) {

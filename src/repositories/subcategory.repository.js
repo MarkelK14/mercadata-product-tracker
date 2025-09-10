@@ -11,15 +11,10 @@ export const upsertSubcategory = async (subcat, parentId) => {
       subcat.id,
       parentId,
       subcat.name,
-      subcat.display_order,
+      subcat.order,
       subcat.layout,
       subcat.published,
       subcat.is_extended,
     ]
   );
-};
-
-export const getSubcategoryIds = async () => {
-  const [result] = await pool.query('SELECT distinct subcategory_id FROM subcategories');
-  return result;
 };
