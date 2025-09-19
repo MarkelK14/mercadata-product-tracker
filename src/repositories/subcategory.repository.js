@@ -6,7 +6,7 @@ export const upsertSubcategory = async (subcat, parentId) => {
      VALUES (?, ?, ?, ?, ?, ?, ?)
      ON DUPLICATE KEY UPDATE name = VALUES(name), display_order = VALUES(display_order),
                              layout = VALUES(layout), published = VALUES(published),
-                             is_extended = VALUES(is_extended), category_id = VALUES(category_id)`,
+                             is_extended = VALUES(is_extended), category_id = VALUES(category_id), is_active = TRUE`,
     [
       subcat.id,
       parentId,

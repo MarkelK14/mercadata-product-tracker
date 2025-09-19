@@ -28,6 +28,14 @@ export const insertProductId = async (productId, subcategory_id) => {
   );
 };
 
+export const selectProductPhotoByProductAndUrl = async (product_id, url) => {
+  const [rows] = await pool.query(
+    'SELECT count(*) as count FROM product_photos WHERE product_id = ? AND regular_url = ?',
+    [product_id, url]
+  );
+  return rows[0];
+};
+
 export const insertProductPhotos = async (product_id, perspective, regular, thumbnail, zoom) => {
   await pool.query(
     'INSERT INTO product_photos (product_id, perspective, regular_url, thumbnail_url, zoom_url) VALUES (?, ?, ?, ?, ?)',
@@ -35,7 +43,14 @@ export const insertProductPhotos = async (product_id, perspective, regular, thum
   );
 };
 
-export const insertPriceHistory = async (product_id, unit_price, unit_name, total_units, unit_size, reference_price, reference_format, iva) => {
+export const setActiveProductPhotos = async (product_id, regular_url) => {
+  await pool.query(
+    'UPDATE product_photos SET is_active = TRUE WHERE product_id = ? and regular_url = ?',
+    [product_id, regular_url]
+  );
+};
+
+export const insertPriceHistory = async (product_id, unit_price, unit_name, reference_price, reference_format, total_units, unit_size, iva) => {
   await pool.query(
     `INSERT INTO prices (
       product_id, unit_price, unit_name, total_units, unit_size,
@@ -79,7 +94,8 @@ export const insertOrUpdateProduct = async (product) => {
         mandatory_mentions = VALUES(mandatory_mentions),
         ingredients = VALUES(ingredients),
         allergens = VALUES(allergens),
-        share_url = VALUES(share_url)`,
+        share_url = VALUES(share_url),
+        is_active = TRUE;`,
     [
       id,
       ean,

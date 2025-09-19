@@ -16,6 +16,7 @@ export const saveOrUpdateSubcategoriesAndProductIds = async (category) => {
             await insertProductId(product.id, subcategory.id);
           } catch (error) {
             console.error('Error inserting product ID:', error);
+            throw error;
           }
         }
       }
