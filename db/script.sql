@@ -42,7 +42,8 @@ CREATE TABLE sections (
     section_id INT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     display_order INT,
-    is_extended BOOLEAN DEFAULT FALSE
+    is_extended BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE categories (
@@ -64,6 +65,7 @@ CREATE TABLE subcategories (
     layout INT,
     published BOOLEAN DEFAULT TRUE,
     is_extended BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE
 );
 
@@ -85,6 +87,7 @@ CREATE TABLE products (
     ingredients TEXT,
     allergens TEXT,
     share_url TEXT,
+    is_active  BOOLEAN,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -98,6 +101,7 @@ CREATE TABLE product_photos (
     regular_url TEXT,
     thumbnail_url TEXT,
     perspective INT,
+    is_active BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
 );
 
