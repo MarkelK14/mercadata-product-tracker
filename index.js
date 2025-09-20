@@ -9,11 +9,11 @@ import { getCategoryIds } from "./src/repositories/category.repository.js";
 import { getProductIds } from "./src/services/product.service.js";
 import { resetActiveFields, resetProductSucategories, resetDatabaseTables } from "./src/repositories/mercadata.repository.js";
 
-// Se ejecuta todos los días a las 5am
-// cron.schedule("0 5 * * *", () => {
-//   console.log("Ejecutando tarea programada...");
-//   fetchData();
-// });
+// Schedule the task to run daily at 5:00 AM
+cron.schedule("0 5 * * *", () => {
+  console.log("Executing scheduled task...");
+  updateCatalog();
+});
 
 
 async function fetchData() {
@@ -100,6 +100,5 @@ const updateCatalog = async () => {
   }
 }
 
-// Ejecutar una vez al arrancar
-// fetchData();
-updateCatalog();
+// Execute once at startup
+fetchData();
