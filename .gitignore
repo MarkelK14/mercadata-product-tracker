@@ -15,8 +15,8 @@
 # production
 /build
 
-# db files
-/bbdd
+# db directory
+/db
 
 # misc
 .DS_Store
@@ -30,6 +30,9 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+
+# local sql
+.sql
 
 # vercel
 .vercel
