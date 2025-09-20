@@ -31,10 +31,6 @@ export const saveOrUpdateProduct = async (product) => {
   
     const lastPriceRecord = await selectLastPriceRecord(product.id);
   
-    if (!Number.isInteger(product.id)) {
-      console.warn(`Warning: product.id is not an integer: ${product.id}`);
-    }
-  
     if (
       lastPriceRecord &&
       lastPriceRecord.unit_price === (parseFloat(product.price_instructions.unit_price) || null) &&
@@ -48,10 +44,6 @@ export const saveOrUpdateProduct = async (product) => {
       // No changes in price, skip inserting a new record
       return;
     }
-  
-    // Ejemplo de uso:
-    const unitPriceDecimal = isDecimal(parseFloat(product.price_instructions.unit_price));
-    // Puedes usar unitPriceDecimal según lo necesites
     
     await insertPriceHistory(
       product.id,
